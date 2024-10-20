@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "more-cartography",
+	"version": "${version}",
+	"name": "More Cartography",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/more-cartography/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"gg.rosie.MoreCartography"
+		],
+		"client": [
+			"gg.rosie.MoreCartographyClient"
+		]
+	},
+	"mixins": [
+		"more-cartography.mixins.json",
+		{
+			"config": "more-cartography.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.7",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,9 +1,17 @@
 package gg.rosie;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.item.FilledMapItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.village.TradeOffer;
+import net.minecraft.village.VillagerProfession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 public class MoreCartography implements ModInitializer {
 	public static final String MOD_ID = "more-cartography";
@@ -20,5 +28,12 @@ public class MoreCartography implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+
+		TradeOfferHelper.registerVillagerOffers(VillagerProfession.CARTOGRAPHER, 2, factories -> {
+			factories.add((entity, random) -> new TradeOffer(
+					new ItemStack(Items.EMERALD, 7),
+					new ItemStack(Objects.requireNonNull(ModItems.getItem("coral_reef_map")), 1),
+					12, 10, 0.05f));
+		});
 	}
 }

@@ -1,6 +1,7 @@
 package gg.rosie;
 
 import gg.rosie.items.CoralReefMap;
+import gg.rosie.items.DubiousMap;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -16,6 +17,9 @@ public class ModItems {
         items.put("coral_map", Registry.register(Registries.ITEM,
                 Identifier.of(MoreCartography.MOD_ID, "coral_map"),
                 new CoralReefMap(new Item.Settings())));
+        items.put("dubious_map", Registry.register(Registries.ITEM,
+                Identifier.of(MoreCartography.MOD_ID, "dubious_map"),
+                new DubiousMap()));
     }
 
     public static ArrayList<Item> getItems() {

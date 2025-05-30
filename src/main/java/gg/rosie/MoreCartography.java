@@ -13,9 +13,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.TradeOffer;
+import net.minecraft.village.TradedItem;
 import net.minecraft.village.VillagerProfession;
 
 import net.minecraft.world.World;
+import net.minecraft.world.biome.source.BiomeSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,27 +37,36 @@ public class MoreCartography implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
-
-		TradeOfferHelper.registerVillagerOffers(VillagerProfession.CARTOGRAPHER, 2, factories -> {
+		TradeOfferHelper.registerVillagerOffers(VillagerProfession.CARTOGRAPHER, 5, factories -> {
 			factories.add((entity, random) -> new TradeOffer(
-					new ItemStack(Items.EMERALD, 7),
-					new ItemStack(Objects.requireNonNull(ModItems.getItem("coral_reef_map")), 1),
+					new TradedItem(Items.EMERALD, 7),
+					new ItemStack(ModItems.getItem("coral_map"), 1),
 					12, 10, 0.05f));
+
+//			factories.add((entity, random) -> new TradeOffer(
+//					new TradedItem(Items.EMERALD, 7),
+//					new ItemStack(, 1),
+//					12, 10, 0.05f));
+
+//			factories.add((entity, random) -> new TradeOffer(
+//					new TradedItem(Items.EMERALD, 7),
+//					new ItemStack(, 1),
+//					12, 10, 0.05f));
+
+//			factories.add((entity, random) -> new TradeOffer(
+//					new TradedItem(Items.EMERALD, 7),
+//					new ItemStack(, 1),
+//					12, 10, 0.05f));
+
+//			factories.add((entity, random) -> new TradeOffer(
+//					new TradedItem(Items.EMERALD, 7),
+//					new ItemStack(, 1),
+//					12, 10, 0.05f));
+
+//			factories.add((entity, random) -> new TradeOffer(
+//					new TradedItem(Items.EMERALD, 7),
+//					new ItemStack(, 1),
+//					12, 10, 0.05f));
 		});
-	}
-
-	public ItemStack createTreasureMap(ServerWorld world, double x, double y, double z) {
-		Vec3d coords = new Vec3d(x, y, z);
-		ItemStack map = FilledMapItem.createMap(world, (int) coords.x, (int) coords.z, (byte)1, true, true);
-		FilledMapItem.fillExplorationMap(world, map);
-
-		ComponentMap componentMap = map.getComponents();
-		MapDecorationsComponent mapDecorationsComponent = componentMap.get(DataComponentTypes.MAP_DECORATIONS);
-		mapDecorationsComponent = mapDecorationsComponent.with("red_x", new MapDecorationsComponent.Decoration(MapDecorationTypes.RED_X, coords.x, coords.z, 0f));
-		map.set(DataComponentTypes.MAP_DECORATIONS, mapDecorationsComponent);
-		map.set(DataComponentTypes.ITEM_NAME, Text.translatable("filled_map.buried_treasure"));
-
-		return map;
 	}
 }

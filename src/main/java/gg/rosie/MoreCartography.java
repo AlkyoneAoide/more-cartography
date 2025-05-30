@@ -2,12 +2,20 @@ package gg.rosie;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.MapDecorationsComponent;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.map.MapDecorationTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.VillagerProfession;
 
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,5 +43,19 @@ public class MoreCartography implements ModInitializer {
 					new ItemStack(Objects.requireNonNull(ModItems.getItem("coral_reef_map")), 1),
 					12, 10, 0.05f));
 		});
+	}
+
+	public ItemStack createTreasureMap(ServerWorld world, double x, double y, double z) {
+		Vec3d coords = new Vec3d(x, y, z);
+		ItemStack map = FilledMapItem.createMap(world, (int) coords.x, (int) coords.z, (byte)1, true, true);
+		FilledMapItem.fillExplorationMap(world, map);
+
+		ComponentMap componentMap = map.getComponents();
+		MapDecorationsComponent mapDecorationsComponent = componentMap.get(DataComponentTypes.MAP_DECORATIONS);
+		mapDecorationsComponent = mapDecorationsComponent.with("red_x", new MapDecorationsComponent.Decoration(MapDecorationTypes.RED_X, coords.x, coords.z, 0f));
+		map.set(DataComponentTypes.MAP_DECORATIONS, mapDecorationsComponent);
+		map.set(DataComponentTypes.ITEM_NAME, Text.translatable("filled_map.buried_treasure"));
+
+		return map;
 	}
 }

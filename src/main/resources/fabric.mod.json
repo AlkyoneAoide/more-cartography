@@ -17,18 +17,8 @@
 	"entrypoints": {
 		"main": [
 			"gg.rosie.MoreCartography"
-		],
-		"client": [
-			"gg.rosie.MoreCartographyClient"
 		]
 	},
-	"mixins": [
-		"more-cartography.mixins.json",
-		{
-			"config": "more-cartography.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.16.7",
 		"minecraft": "~1.20.1",

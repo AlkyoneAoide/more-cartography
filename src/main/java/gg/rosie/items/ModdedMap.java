@@ -1,7 +1,6 @@
 package gg.rosie.items;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.block.Block;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.MapDecorationsComponent;
@@ -12,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.map.MapDecorationTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -25,24 +23,13 @@ import net.minecraft.world.biome.Biome;
 
 public class ModdedMap extends EmptyMapItem {
     private final RegistryKey<Biome> biome;
-//    private final TagKey<Block> block;
     private String itemName;
 
     public ModdedMap(Settings settings, RegistryKey<Biome> biome, String itemName) {
         super(settings);
         this.biome = biome;
-//        this.block = null;
         this.itemName = "item.more-cartography." + itemName;
     }
-
- /*
-    public ModdedMap(Settings settings, RegistryKey<Biome> biome, TagKey<Block> block, String itemName) {
-        super(settings);
-        this.biome = biome;
-        this.block = block;
-        this.itemName = itemName;
-    }
- */
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -105,32 +92,8 @@ public class ModdedMap extends EmptyMapItem {
                 biomeRegistryEntry -> biomeRegistryEntry.matchesKey(biome),
                 user.getBlockPos(), 12801, 32, 64);
 
-//        if (coordsPair == null || isBlockNearby(world, coordsPair.getFirst(), 50))
         if (coordsPair == null)
             return null;
         return coordsPair.getFirst();
     }
-
- /*
-    public boolean isBlockNearby(ServerWorld world, BlockPos origin, int range) {
-        Chunk chunk;
-        final boolean[] found = {false};
-        int x;
-        int z;
-
-        for (x = origin.getX() - range; x < origin.getX() + range; x+=16) {
-            for (z = origin.getY() - range; z < origin.getY() + range; z+=16) {
-                chunk = world.getChunk(x, z);
-                found[0] = false;
-                chunk.forEachBlockMatchingPredicate(blockState -> blockState.isIn(this.block),
-                        (pos, state) -> found[0] = true);
-
-                if (found[0])
-                    return true;
-            }
-        }
-
-        return false;
-    }
- */
 }

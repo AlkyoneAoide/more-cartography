@@ -54,13 +54,13 @@ public class ModdedMap extends EmptyMapItem {
             if (coords == null) {
                 coords = BlockPos.fromLong(world.random.nextLong());
 
-                filledMap = DubiousMap.createMap(world, coords.getX(), coords.getZ(),
+                filledMap = DubiousMap.createMap((ServerWorld) world, coords.getX(), coords.getZ(),
                         (byte) 1, true, true);
                 DubiousMap.fillExplorationMap((ServerWorld) world, filledMap);
 
                 this.itemName = "item.more-cartography.dubious_map";
             } else {
-                filledMap = FilledMapItem.createMap(world, coords.getX(), coords.getZ(),
+                filledMap = FilledMapItem.createMap((ServerWorld) world, coords.getX(), coords.getZ(),
                         (byte) 1, true, true);
                 FilledMapItem.fillExplorationMap((ServerWorld) world, filledMap);
             }

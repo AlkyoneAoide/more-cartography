@@ -15,8 +15,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -32,11 +32,11 @@ public class ModdedMap extends EmptyMapItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack emptyMap = user.getStackInHand(hand);
 
         if (world.isClient)
-            return TypedActionResult.success(emptyMap);
+            return ActionResult.SUCCESS;
         else {
             // Increment stats, decrement item count, play sound
             emptyMap.decrementUnlessCreative(1, user);
@@ -77,12 +77,12 @@ public class ModdedMap extends EmptyMapItem {
 
             // Delete old map item stack if empty, give new map to user
             if (emptyMap.isEmpty())
-                return TypedActionResult.consume(filledMap);
+                return ActionResult.SUCCESS.withNewHandStack(filledMap);
             else {
                 if (!user.getInventory().insertStack(filledMap.copy()))
                     user.dropItem(filledMap, false);
 
-                return TypedActionResult.consume(emptyMap);
+                return ActionResult.SUCCESS;
             }
         }
     }

@@ -1,14 +1,12 @@
 package gg.rosie.items;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.MapDecorationsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EmptyMapItem;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.map.MapDecorationTypes;
+import net.minecraft.item.map.MapIcon;
+import net.minecraft.item.map.MapState;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
@@ -39,7 +37,8 @@ public class ModdedMap extends EmptyMapItem {
             return TypedActionResult.success(emptyMap);
         else {
             // Increment stats, decrement item count, play sound
-            emptyMap.decrementUnlessCreative(1, user);
+            if (!user.getAbilities().creativeMode)
+                emptyMap.decrement(1);
 
             user.incrementStat(Stats.USED.getOrCreateStat(this));
 
@@ -66,14 +65,8 @@ public class ModdedMap extends EmptyMapItem {
             }
 
             // Decorate and name map item
-            ComponentMap componentMap = filledMap.getComponents();
-
-            MapDecorationsComponent mapDecorationsComponent = componentMap.get(DataComponentTypes.MAP_DECORATIONS);
-            mapDecorationsComponent = mapDecorationsComponent.with("red_x",
-                    new MapDecorationsComponent.Decoration(MapDecorationTypes.RED_X, coords.getX(), coords.getZ(), 0f));
-
-            filledMap.set(DataComponentTypes.MAP_DECORATIONS, mapDecorationsComponent);
-            filledMap.set(DataComponentTypes.ITEM_NAME, Text.translatable(this.itemName));
+            MapState.addDecorationsNbt(filledMap, coords, "red_x", MapIcon.Type.RED_X);
+            filledMap.setCustomName(Text.translatable(this.itemName));
 
             // Delete old map item stack if empty, give new map to user
             if (emptyMap.isEmpty())

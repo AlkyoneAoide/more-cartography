@@ -19,6 +19,7 @@ public class MoreCartography implements ModInitializer {
 			for (Item item : ModItems.getItems()) {
 				factories.add((entity, random) -> new TradeOffer(
 					new ItemStack(Items.EMERALD, 7),
+					new ItemStack(Items.COMPASS, 1),
 					new ItemStack(item, 1),
 					12, 10, 0.05f));
 			}
